@@ -54,8 +54,8 @@
 <body>
   <h1>Custom Photo Resizer</h1>
   <p class="note">
-    Fill in the fields below. Either provide width and height ranges (columns 3 & 4) or an exact dimension (column 5).<br>
-    The "Resize" button will activate once required fields are completed.
+    Fill in the fields below. Provide either the width & height range OR the exact dimensions (in inches @ dpi).<br>
+    <strong>Do not fill both.</strong>
   </p>
   <div class="container">
     <!-- Column 1: Image Upload -->
@@ -118,6 +118,7 @@
     function validateInputs() {
       if (!imageUpload.files || imageUpload.files.length === 0) return false;
       if (!minSize.value || !maxSize.value) return false;
+      // Check if either width/height range is provided or exact dimensions.
       const rangeProvided = minWidth.value && maxWidth.value && minHeight.value && maxHeight.value;
       const exactProvided = dimensions.value;
       if (!rangeProvided && !exactProvided) return false;
@@ -146,14 +147,14 @@
       let dataURL = canvas.toDataURL('image/jpeg', quality);
       let sizeKB = dataURLSizeKB(dataURL);
 
-      // Lower quality if the file size is too high.
+      // Lower quality if the file is too high.
       while (sizeKB > maxKB && quality > 0.1) {
         quality -= step;
         dataURL = canvas.toDataURL('image/jpeg', quality);
         sizeKB = dataURLSizeKB(dataURL);
       }
 
-      // Increase quality if the file size is too low.
+      // Increase quality if the file is too low.
       while (sizeKB < minKB && quality < 1.0) {
         quality += step;
         if (quality > 1.0) quality = 1.0;
@@ -166,6 +167,13 @@
 
     // When the user clicks the Resize button.
     resizeBtn.addEventListener('click', function () {
+      // Check if both the range and the exact dimension fields are filled.
+      const rangeProvided = minWidth.value && maxWidth.value && minHeight.value && maxHeight.value;
+      const exactProvided = dimensions.value;
+      if (rangeProvided && exactProvided) {
+        alert("Please provide either the width & height ranges or the exact dimensions (in inches @ dpi), not both.");
+        return;
+      }
       if (!validateInputs()) {
         alert('Please fill in all required fields.');
         return;
@@ -176,7 +184,7 @@
         const img = new Image();
         img.onload = function () {
           let newWidth, newHeight;
-          if (dimensions.value) {
+          if (exactProvided) {
             // Parse the format "widthxheight @dpi" (e.g., "2x2 @300")
             const parts = dimensions.value.split('@');
             if (parts.length === 2) {
