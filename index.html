@@ -180,6 +180,12 @@
 
     let resizedImageDataURL = '';
 
+    // Hide the download button and clear the last image whenever inputs change
+    function resetDownload() {
+      downloadBtn.style.display = 'none';
+      resizedImageDataURL = '';
+    }
+
     // Validate that required fields are filled.
     function validateInputs() {
       if (!imageUpload.files || imageUpload.files.length === 0) return false;
@@ -195,8 +201,13 @@
     function updateResizeButton() {
       resizeBtn.disabled = !validateInputs();
     }
+
+    // Whenever the user changes any input, reset the download link and update the button
     [imageUpload, minSize, maxSize, minWidth, maxWidth, minHeight, maxHeight, dimensions].forEach(input => {
-      input.addEventListener('input', updateResizeButton);
+      input.addEventListener('input', () => {
+        resetDownload();
+        updateResizeButton();
+      });
     });
 
     // Function to estimate the size (in KB) of a Data URL.
