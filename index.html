@@ -54,7 +54,7 @@
 <body>
   <h1>Custom Photo Resizer</h1>
   <p class="note">
-    Fill in the fields below. Provide either the width & height range OR the exact dimensions (in inches @ dpi).<br>
+    Fill in the fields below. Provide either the width &amp; height range OR the exact dimensions (in inches @ dpi).<br>
     <strong>Do not fill both.</strong>
   </p>
   <div class="container">
@@ -211,7 +211,7 @@
           getDataURLWithSizeConstraints(parseInt(minSize.value), parseInt(maxSize.value), function(dataURL, qualityUsed, finalSizeKB) {
             resizedImageDataURL = dataURL;
             downloadBtn.style.display = 'block';
-            alert('Image resized at quality: ' + qualityUsed.toFixed(2) + '. Final size: ' + finalSizeKB.toFixed(1) + ' KB. Click Download to save.');
+            alert("Resize successful! Your image meets the size criteria. Final file size: " + finalSizeKB.toFixed(1) + " KB. Click the Download button to save your image.");
           });
         };
         img.src = event.target.result;
