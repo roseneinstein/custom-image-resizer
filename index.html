@@ -124,6 +124,28 @@
       background: #43a047;
     }
 
+    /* The text below the main heading (80% font size) */
+    .intro-text {
+      font-size: 80%;
+      margin-bottom: 20px;
+    }
+
+    /* FAQ Section Styles */
+    .faq-section {
+      margin-top: 40px; /* space above FAQ to separate from the buttons */
+    }
+    .faq-section h2 {
+      margin-bottom: 15px;
+    }
+    .faq-section h3 {
+      margin: 10px 0 5px;
+      font-size: 1.1em; 
+    }
+    .faq-section p {
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
     /* Responsive adjustments for smaller screens */
     @media (max-width: 600px) {
       .grid-container {
@@ -137,7 +159,7 @@
     <h1>Custom Photo Resizer</h1>
 
     <!-- This text is at 80% font size, right after the main heading -->
-    <div style="font-size: 80%;">
+    <div class="intro-text">
       <h2>Why Use Our Online Image Compressor?</h2>
       <p>
         Our online image compressor and photo resizer makes it easy 
@@ -192,6 +214,25 @@
     <button id="downloadBtn">Download Resized Image</button>
     <!-- Hidden Canvas to Process the Image -->
     <canvas id="canvas" style="display: none;"></canvas>
+
+    <!-- FAQ Section at the bottom with extra spacing -->
+    <div class="faq-section">
+      <h2>Frequently Asked Questions (FAQ)</h2>
+
+      <h3>Will compressing my image reduce its quality?</h3>
+      <p>
+        Our <strong>online image compressor</strong> does its best to maintain 
+        high-quality results. You can resize and compress without losing too much detail.
+      </p>
+
+      <h3>How do I resize an image without losing clarity?</h3>
+      <p>
+        Use our <strong>photo resizer</strong> feature to adjust width and height 
+        while preserving aspect ratio. This helps maintain image clarity.
+      </p>
+
+      <!-- Add more questions & answers here as needed -->
+    </div>
   </div>
 
   <script>
