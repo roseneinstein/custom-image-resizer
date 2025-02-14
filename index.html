@@ -54,8 +54,9 @@
       margin-bottom: 20px;
     }
 
+    /* Light grey boxes for form groups */
     .form-group {
-      background: #f9f9f9;
+      background: #f1f1f1; /* very light grey */
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -86,26 +87,31 @@
       padding: 12px 20px;
       font-size: 16px;
       color: #fff;
-      background: #66a6ff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
 
-    #resizeBtn:hover,
-    #downloadBtn:hover {
+    /* Resize button stays the same (light blue) */
+    #resizeBtn {
+      background: #66a6ff;
+    }
+    #resizeBtn:hover {
       background: #5595e6;
     }
-
     #resizeBtn:disabled {
       background: #aaa;
       cursor: not-allowed;
     }
 
-    /* Hide the download button initially */
+    /* Download button in green */
     #downloadBtn {
-      display: none;
+      background: #4CAF50;
+      display: none; /* hidden initially */
+    }
+    #downloadBtn:hover {
+      background: #43a047;
     }
 
     /* Responsive adjustments for smaller screens */
@@ -287,7 +293,7 @@
           // Adjust JPEG quality to meet file size constraints.
           getDataURLWithSizeConstraints(parseInt(minSize.value), parseInt(maxSize.value), function(dataURL, qualityUsed, finalSizeKB) {
             resizedImageDataURL = dataURL;
-            downloadBtn.style.display = 'block';
+            downloadBtn.style.display = 'block'; // Show green Download button
             alert("Resize successful! Your image meets the size criteria. Final file size: " 
               + finalSizeKB.toFixed(1) 
               + " KB. Click the Download button to save your image."
