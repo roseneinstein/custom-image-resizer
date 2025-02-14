@@ -42,9 +42,11 @@
       margin-top: 20px;
     }
 
+    /* Main heading at 110% font size */
     h1 {
       text-align: center;
       margin-bottom: 20px;
+      font-size: 110%;
     }
 
     .note {
@@ -133,10 +135,23 @@
 <body>
   <div class="container">
     <h1>Custom Photo Resizer</h1>
+
+    <!-- This text is at 80% font size, right after the main heading -->
+    <div style="font-size: 80%;">
+      <h2>Why Use Our Online Image Compressor?</h2>
+      <p>
+        Our online image compressor and photo resizer makes it easy 
+        to reduce file sizes without losing quality. Whether you need 
+        to upload a signature or optimize a product photo, this free 
+        tool saves you time and bandwidth.
+      </p>
+    </div>
+
     <p class="note">
       Provide either the width &amp; height range OR the exact dimensions (in inches @ dpi).<br>
       <strong>Do not fill both.</strong>
     </p>
+
     <div class="grid-container">
       <!-- Column 1: Image Upload -->
       <div class="form-group">
@@ -171,14 +186,6 @@
       </div>
     </div>
     
-    <!-- New heading and paragraph (Task 2) -->
-    <h2>Why Use Our Online Image Compressor?</h2>
-    <p>
-      Our <strong>online image compressor</strong> and <strong>photo resizer</strong> makes it 
-      easy to reduce file sizes without losing quality. Whether you need to upload a 
-      signature or optimize a product photo, this free tool saves you time and bandwidth.
-    </p>
-
     <!-- Resize Button -->
     <button id="resizeBtn" disabled>Resize</button>
     <!-- Download Button (appears after resize) -->
