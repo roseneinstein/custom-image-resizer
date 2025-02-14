@@ -66,9 +66,9 @@
     <!-- Column 2: File Size Limits -->
     <div class="form-group">
       <label for="minSize">Min File Size (KB)</label>
-      <input type="number" id="minSize" placeholder="e.g., 20" />
+      <input type="number" id="minSize" placeholder="e.g., 50" />
       <label for="maxSize">Max File Size (KB)</label>
-      <input type="number" id="maxSize" placeholder="e.g., 100" />
+      <input type="number" id="maxSize" placeholder="e.g., 300" />
     </div>
     <!-- Column 3: Width Range -->
     <div class="form-group">
@@ -99,7 +99,7 @@
   <canvas id="canvas" style="display: none;"></canvas>
 
   <script>
-    // Get form elements
+    // Get references to our form elements.
     const imageUpload = document.getElementById('imageUpload');
     const minSize = document.getElementById('minSize');
     const maxSize = document.getElementById('maxSize');
@@ -114,42 +114,62 @@
 
     let resizedImageDataURL = '';
 
-    // Function to check if required fields are filled
+    // Validate that required fields are filled.
     function validateInputs() {
-      // Check that an image file is uploaded
-      if (!imageUpload.files || imageUpload.files.length === 0) {
-        return false;
-      }
-      // Check file size limits are provided
-      if (!minSize.value || !maxSize.value) {
-        return false;
-      }
-      // Ensure either width/height range OR exact dimensions is provided
+      if (!imageUpload.files || imageUpload.files.length === 0) return false;
+      if (!minSize.value || !maxSize.value) return false;
       const rangeProvided = minWidth.value && maxWidth.value && minHeight.value && maxHeight.value;
       const exactProvided = dimensions.value;
-      if (!rangeProvided && !exactProvided) {
-        return false;
-      }
+      if (!rangeProvided && !exactProvided) return false;
       return true;
     }
 
-    // Enable or disable the Resize button based on input validation
+    // Enable or disable the Resize button based on input validation.
     function updateResizeButton() {
       resizeBtn.disabled = !validateInputs();
     }
-
-    // Add event listeners to all inputs for real-time validation
     [imageUpload, minSize, maxSize, minWidth, maxWidth, minHeight, maxHeight, dimensions].forEach(input => {
       input.addEventListener('input', updateResizeButton);
     });
 
-    // Resize button click event
+    // Function to estimate the size (in KB) of a Data URL.
+    function dataURLSizeKB(dataURL) {
+      const base64Str = dataURL.split(',')[1];
+      const sizeInBytes = Math.floor((base64Str.length * 3) / 4);
+      return sizeInBytes / 1024;
+    }
+
+    // Adjust the JPEG quality until the file size is within the user-specified limits.
+    function getDataURLWithSizeConstraints(minKB, maxKB, callback) {
+      let quality = 0.9; // Start with a high quality.
+      const step = 0.05; // Quality adjustment step.
+      let dataURL = canvas.toDataURL('image/jpeg', quality);
+      let sizeKB = dataURLSizeKB(dataURL);
+
+      // Lower quality if the file size is too high.
+      while (sizeKB > maxKB && quality > 0.1) {
+        quality -= step;
+        dataURL = canvas.toDataURL('image/jpeg', quality);
+        sizeKB = dataURLSizeKB(dataURL);
+      }
+
+      // Increase quality if the file size is too low.
+      while (sizeKB < minKB && quality < 1.0) {
+        quality += step;
+        if (quality > 1.0) quality = 1.0;
+        dataURL = canvas.toDataURL('image/jpeg', quality);
+        sizeKB = dataURLSizeKB(dataURL);
+        if (quality === 1.0) break;
+      }
+      callback(dataURL, quality, sizeKB);
+    }
+
+    // When the user clicks the Resize button.
     resizeBtn.addEventListener('click', function () {
       if (!validateInputs()) {
         alert('Please fill in all required fields.');
         return;
       }
-      // Read the uploaded image file
       const file = imageUpload.files[0];
       const reader = new FileReader();
       reader.onload = function (event) {
@@ -157,13 +177,11 @@
         img.onload = function () {
           let newWidth, newHeight;
           if (dimensions.value) {
-            // If exact dimensions are provided, parse them.
-            // Expected format: "widthxheight @dpi" (e.g., "2x2 @300")
+            // Parse the format "widthxheight @dpi" (e.g., "2x2 @300")
             const parts = dimensions.value.split('@');
             if (parts.length === 2) {
               const dims = parts[0].trim().split('x');
               if (dims.length === 2) {
-                // Convert inches to pixels using the provided DPI
                 const dpi = parseInt(parts[1].trim());
                 const inchesWidth = parseFloat(dims[0]);
                 const inchesHeight = parseFloat(dims[1]);
@@ -172,27 +190,28 @@
               }
             }
           } else {
-            // Otherwise, use the minimum values as the new dimensions.
             newWidth = parseInt(minWidth.value);
             newHeight = parseInt(minHeight.value);
           }
-          // Set canvas size and draw the image
+          // Resize the image using a hidden canvas.
           canvas.width = newWidth;
           canvas.height = newHeight;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, newWidth, newHeight);
-          // Get the new image data (as JPEG format)
-          resizedImageDataURL = canvas.toDataURL('image/jpeg');
-          // Show the Download button
-          downloadBtn.style.display = 'block';
-          alert('Image resized successfully! Click the download button to save it.');
+
+          // Adjust JPEG quality to meet file size constraints.
+          getDataURLWithSizeConstraints(parseInt(minSize.value), parseInt(maxSize.value), function(dataURL, qualityUsed, finalSizeKB) {
+            resizedImageDataURL = dataURL;
+            downloadBtn.style.display = 'block';
+            alert('Image resized at quality: ' + qualityUsed.toFixed(2) + '. Final size: ' + finalSizeKB.toFixed(1) + ' KB. Click Download to save.');
+          });
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(file);
     });
 
-    // Download button click event
+    // When the user clicks the Download button.
     downloadBtn.addEventListener('click', function () {
       if (!resizedImageDataURL) return;
       const link = document.createElement('a');
