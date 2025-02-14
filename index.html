@@ -30,8 +30,6 @@
       padding: 0;
       font-family: 'Roboto', sans-serif;
       color: #333;
-      /* If your file is named exactly "background.jpg" 
-         and is in the same folder as index.html, use this: */
       background: url("background.jpg") no-repeat center center fixed;
       background-size: cover;
     }
@@ -136,7 +134,7 @@
 
     /* FAQ Section at the bottom with extra spacing, 75% font size */
     .faq-section {
-      margin-top: 40px; /* space above FAQ to separate from the buttons */
+      margin-top: 40px;
       font-size: 75%;
     }
     .faq-section h2 {
@@ -151,6 +149,20 @@
       line-height: 1.4;
     }
 
+    /* Link box to the govt-photo-resizer site at the very bottom */
+    .other-site-link {
+      margin-top: 30px;
+      padding: 15px;
+      background: #f0fff0;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    .other-site-link a {
+      color: #008080;
+      font-weight: bold;
+    }
+
     /* Responsive adjustments for smaller screens */
     @media (max-width: 600px) {
       .grid-container {
@@ -163,7 +175,7 @@
   <div class="container">
     <h1>Custom Photo Resizer</h1>
 
-    <!-- This text is at 80% font size, right after the main heading -->
+    <!-- Intro text at 80% font size -->
     <div class="intro-text">
       <h2>Why Use Our Online Image Compressor?</h2>
       <p>
@@ -220,7 +232,7 @@
     <!-- Hidden Canvas to Process the Image -->
     <canvas id="canvas" style="display: none;"></canvas>
 
-    <!-- FAQ Section at the bottom with extra spacing, 75% font size -->
+    <!-- FAQ Section at 75% font size -->
     <div class="faq-section">
       <h2>Frequently Asked Questions (FAQ)</h2>
 
@@ -234,6 +246,17 @@
       <p>
         Use our <strong>photo resizer</strong> feature to adjust width and height 
         while preserving aspect ratio. This helps maintain image clarity.
+      </p>
+    </div>
+
+    <!-- New link box at the bottom, pointing to govt-photo-resizer -->
+    <div class="other-site-link">
+      <p>
+        Applying for government exams?
+        <a href="https://roseneinstein.github.io/govt-photo-resizer/" target="_blank">
+          Check out our Govt Exams Photo Resizer
+        </a>
+        to see upcoming exams and resize your photo/signature automatically!
       </p>
     </div>
   </div>
