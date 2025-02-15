@@ -3,30 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
+
   <!-- Google Search Console Verification Meta Tag -->
   <meta name="google-site-verification" content="3iM4RS8iUYrjsUirdaXXeHrTv7AHj9sqmrU6jifDWDo" />
-  
+
   <title>Online Image Compressor &amp; Resizer | Free Photo Tools</title>
-  <meta 
-    name="description" 
+  <meta
+    name="description"
     content="Quickly compress and resize your images online for free. Perfect for photos, signatures, and more!"
   >
-  <meta 
-    name="keywords" 
+  <meta
+    name="keywords"
     content="online image compressor, photo resizer, compress images, resize photos, image size reducer"
   >
+
   <!-- Optional Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" 
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
     rel="stylesheet"
   >
+
   <style>
-    /* 
-      1) Variables for LIGHT vs. DARK backgrounds.
-         We use a lighter overlay in dark mode so the original image remains visible.
+    /*
+      We define two backgrounds:
+      1) Light mode: background.jpg
+      2) Dark mode: background-dark.webp
+
+      We'll also use a mild overlay in dark mode to keep text readable.
     */
     :root {
       /* Light Mode Background */
@@ -35,12 +40,11 @@
       --text-color-light: #333;
       --container-bg-light: rgba(255, 255, 255, 0.85);
 
-      /* Dark Mode: a lighter overlay (rgba(0,0,0,0.2)) for a uniform background */
-      --bg-dark: url("background.jpg") no-repeat center center fixed;
+      /* Dark Mode Background (the new file you downloaded) */
+      --bg-dark: url("background-dark.webp") no-repeat center center fixed;
       --overlay-dark: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
       --text-color-dark: #ddd;
-      /* Transparent container in dark mode for a uniform look */
-      --container-bg-dark: transparent;
+      --container-bg-dark: rgba(0, 0, 0, 0.5); /* Adjust as you like */
 
       /* Shared Colors */
       --border-color: #aaa;
@@ -49,7 +53,7 @@
       --dropzone-bg: #f9f9f9;
     }
 
-    /* BODY uses var(--overlay-*) + var(--bg-*) for backgrounds */
+    /* Body uses background from these variables */
     body {
       margin: 0;
       padding: 0;
@@ -59,12 +63,14 @@
       background-size: cover;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
+
+    /* Dark Mode toggles different background + text color */
     .dark-mode {
       color: var(--text-color-dark);
       background: var(--overlay-dark), var(--bg-dark);
     }
 
-    /* Container for the page content */
+    /* Container for page content */
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -108,7 +114,7 @@
       transition: background-color 0.3s ease;
     }
     .dark-mode .form-group {
-      background: none; /* or #444 if you want some contrast */
+      background: none; /* or #444 if you want some contrast in dark mode */
     }
 
     label {
@@ -173,7 +179,7 @@
       margin-bottom: 20px;
     }
 
-    /* FAQ Section at the bottom with extra spacing, 75% font size */
+    /* FAQ Section at 75% font size */
     .faq-section {
       margin-top: 40px;
       font-size: 75%;
@@ -183,14 +189,14 @@
     }
     .faq-section h3 {
       margin: 10px 0 5px;
-      font-size: 1.1em; 
+      font-size: 1.1em;
     }
     .faq-section p {
       margin-bottom: 20px;
       line-height: 1.4;
     }
 
-    /* Link box to the govt-photo-resizer site at the very bottom */
+    /* Link box at the bottom, pointing to govt-photo-resizer */
     .other-site-link {
       margin-top: 30px;
       padding: 15px;
@@ -201,7 +207,7 @@
       transition: background-color 0.3s ease;
     }
     .dark-mode .other-site-link {
-      background: none; /* or #2f4f4f if you want a subtle difference */
+      background: none; /* or a subtle dark color if you prefer */
     }
     .other-site-link a {
       color: var(--link-color);
@@ -212,7 +218,7 @@
       color: #66ffd2;
     }
 
-    /* The Drag & Drop Box */
+    /* Drag & Drop Box */
     #dropZone {
       margin-top: 10px;
       border: 2px dashed var(--border-color);
@@ -224,7 +230,7 @@
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     .dark-mode #dropZone {
-      background-color: #333; 
+      background-color: #333;
       border-color: #666;
     }
 
@@ -268,9 +274,9 @@
     <div class="intro-text">
       <h2>Why Use Our Online Image Compressor?</h2>
       <p>
-        Our online image compressor and photo resizer makes it easy 
-        to reduce file sizes without losing quality. Whether you need 
-        to upload a signature or optimize a product photo, this free 
+        Our online image compressor and photo resizer makes it easy
+        to reduce file sizes without losing quality. Whether you need
+        to upload a signature or optimize a product photo, this free
         tool saves you time and bandwidth.
       </p>
     </div>
@@ -319,7 +325,7 @@
         <input type="text" id="dimensions" placeholder="e.g., 2x2 @300" />
       </div>
     </div>
-    
+
     <!-- Resize Button -->
     <button id="resizeBtn" disabled>Resize</button>
     <!-- Download Button (appears after resize) -->
@@ -327,26 +333,26 @@
     <!-- Hidden Canvas to Process the Image -->
     <canvas id="canvas" style="display: none;"></canvas>
 
-    <!-- New italicized note above the FAQ -->
+    <!-- Italic note above the FAQ -->
     <p style="font-style: italic; margin-top: 20px;">
       *Note: If you want to resize an image to a specific dimension (for example, 300×400),
       simply enter 300 in both the Min Width and Max Width fields, and 400 in both the
       Min Height and Max Height fields.
     </p>
 
-    <!-- FAQ Section at 75% font size -->
+    <!-- FAQ Section -->
     <div class="faq-section">
       <h2>Frequently Asked Questions (FAQ)</h2>
 
       <h3>Will compressing my image reduce its quality?</h3>
       <p>
-        Our <strong>online image compressor</strong> does its best to maintain 
+        Our <strong>online image compressor</strong> does its best to maintain
         high-quality results. You can resize and compress without losing too much detail.
       </p>
 
       <h3>How do I resize an image without losing clarity?</h3>
       <p>
-        Use our <strong>photo resizer</strong> feature to adjust width and height 
+        Use our <strong>photo resizer</strong> feature to adjust width and height
         while preserving aspect ratio. This helps maintain image clarity.
       </p>
     </div>
@@ -520,8 +526,8 @@
           getDataURLWithSizeConstraints(parseInt(minSize.value), parseInt(maxSize.value), function(dataURL, qualityUsed, finalSizeKB) {
             resizedImageDataURL = dataURL;
             downloadBtn.style.display = 'block'; // Show green Download button
-            alert("Resize successful! Your image meets the size criteria. Final file size: " 
-              + finalSizeKB.toFixed(1) 
+            alert("Resize successful! Your image meets the size criteria. Final file size: "
+              + finalSizeKB.toFixed(1)
               + " KB. Click the Download button to save your image."
             );
           });
@@ -577,7 +583,7 @@
       }
     });
 
-    // Optional: let user click the drop zone to open file dialog
+    // Let user click the drop zone to open file dialog
     dropZone.addEventListener('click', () => {
       imageUpload.click();
     });
