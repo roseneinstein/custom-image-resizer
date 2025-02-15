@@ -25,13 +25,6 @@
   >
 
   <style>
-    /*
-      1) We define backgrounds for light and dark modes:
-         - Light mode uses background.jpg
-         - Dark mode uses background-dark.webp
-      2) We'll ensure both are set to cover the entire screen
-         with background-size: cover, background-position: center, etc.
-    */
     :root {
       /* Light Mode BG */
       --bg-light: url("background.jpg") no-repeat center center fixed;
@@ -52,7 +45,6 @@
       --dropzone-bg: #f9f9f9;
     }
 
-    /* Light mode uses var(--overlay-light), var(--bg-light) */
     body {
       margin: 0;
       padding: 0;
@@ -65,8 +57,6 @@
       background-attachment: fixed;
       transition: color 0.3s ease;
     }
-
-    /* Dark mode overrides: same cover/center/fixed to ensure full screen coverage */
     .dark-mode {
       color: var(--text-color-dark);
       background: var(--overlay-dark), var(--bg-dark);
@@ -76,7 +66,6 @@
       background-attachment: fixed;
     }
 
-    /* Container keeps its background color in both modes */
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -90,7 +79,6 @@
       background-color: var(--container-bg-dark);
     }
 
-    /* Main heading at 200% font size */
     h1 {
       text-align: center;
       margin-bottom: 20px;
@@ -103,7 +91,6 @@
       margin-bottom: 20px;
     }
 
-    /* Grid layout for the form sections */
     .grid-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -111,7 +98,6 @@
       margin-bottom: 20px;
     }
 
-    /* Light grey boxes for form groups */
     .form-group {
       background: #f1f1f1;
       padding: 15px;
@@ -120,7 +106,7 @@
       transition: background-color 0.3s ease;
     }
     .dark-mode .form-group {
-      background: #444; /* or none if you want more transparency */
+      background: #444;
     }
 
     label {
@@ -145,7 +131,6 @@
       color: #333;
     }
 
-    /* Buttons */
     #resizeBtn, #downloadBtn {
       display: block;
       margin: 10px auto;
@@ -157,8 +142,6 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-
-    /* Resize button stays light blue */
     #resizeBtn {
       background: #66a6ff;
     }
@@ -170,39 +153,24 @@
       cursor: not-allowed;
     }
 
-    /* Download button is green */
     #downloadBtn {
       background: #4CAF50;
-      display: none; /* hidden initially */
+      display: none;
     }
     #downloadBtn:hover {
       background: #43a047;
     }
 
-    /* The text below the main heading (80% font size) */
     .intro-text {
       font-size: 80%;
       margin-bottom: 20px;
     }
 
-    /* FAQ Section at 75% font size */
     .faq-section {
       margin-top: 40px;
       font-size: 75%;
     }
-    .faq-section h2 {
-      margin-bottom: 15px;
-    }
-    .faq-section h3 {
-      margin: 10px 0 5px;
-      font-size: 1.1em;
-    }
-    .faq-section p {
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
 
-    /* Link box at the bottom, pointing to govt-photo-resizer */
     .other-site-link {
       margin-top: 30px;
       padding: 15px;
@@ -213,7 +181,7 @@
       transition: background-color 0.3s ease;
     }
     .dark-mode .other-site-link {
-      background: #2f4f4f; /* or none if you want it fully transparent */
+      background: #2f4f4f;
     }
     .other-site-link a {
       color: var(--link-color);
@@ -224,7 +192,6 @@
       color: #66ffd2;
     }
 
-    /* Drag & Drop Box */
     #dropZone {
       margin-top: 10px;
       border: 2px dashed var(--border-color);
@@ -240,7 +207,6 @@
       border-color: #666;
     }
 
-    /* Theme Toggle Button */
     #themeToggle {
       float: right;
       margin-bottom: 10px;
@@ -256,9 +222,25 @@
       background: #555;
     }
 
-    /* Responsive adjustments for smaller screens */
+    /* Language Selector */
+    #languageSelect {
+      float: right;
+      margin-top: 10px;
+      margin-right: 10px;
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .dark-mode #languageSelect {
+      background: #444;
+      color: #fff;
+      border: 1px solid #666;
+    }
+
     @media (max-width: 600px) {
-      #themeToggle {
+      #themeToggle,
+      #languageSelect {
         float: none;
         display: block;
         margin: 10px auto;
@@ -268,15 +250,26 @@
 </head>
 <body>
   <div class="container">
-    <!-- Light/Dark Mode Toggle Button -->
+    <!-- Dark Mode & Language Selectors -->
     <button id="themeToggle">Dark Mode</button>
+    <select id="languageSelect">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+      <option value="ta">தமிழ்</option>
+      <option value="bn">বাংলা</option>
+      <option value="mr">मराठी</option>
+      <option value="te">తెలుగు</option>
+      <option value="kn">ಕನ್ನಡ</option>
+      <option value="ml">മലയാളം</option>
+    </select>
 
-    <h1>Custom Photo Resizer</h1>
+    <!-- Main Heading -->
+    <h1 id="heading">Custom Photo Resizer</h1>
 
-    <!-- Intro text at 80% font size -->
+    <!-- Subheading & Intro Paragraph -->
     <div class="intro-text">
-      <h2>Why Use Our Online Image Compressor?</h2>
-      <p>
+      <h2 id="subHeading">Why Use Our Online Image Compressor?</h2>
+      <p id="introPara">
         Our online image compressor and photo resizer makes it easy
         to reduce file sizes without losing quality. Whether you need
         to upload a signature or optimize a product photo, this free
@@ -284,7 +277,8 @@
       </p>
     </div>
 
-    <p class="note">
+    <!-- Note Line -->
+    <p id="noteLine" class="note">
       Provide either the width &amp; height range OR the exact dimensions (in inches @ dpi).<br>
       <strong>Do not fill both.</strong>
     </p>
@@ -292,7 +286,7 @@
     <div class="grid-container">
       <!-- Column 1: Image Upload -->
       <div class="form-group">
-        <label for="imageUpload">Upload Image</label>
+        <label id="uploadLabel" for="imageUpload">Upload Image</label>
         <input type="file" id="imageUpload" accept="image/*" />
 
         <!-- Drag & Drop Box -->
@@ -303,64 +297,63 @@
 
       <!-- Column 2: File Size Limits -->
       <div class="form-group">
-        <label for="minSize">Min File Size (KB)</label>
+        <label id="minSizeLabel">Min File Size (KB)</label>
         <input type="number" id="minSize" placeholder="e.g., 50" />
-        <label for="maxSize">Max File Size (KB)</label>
+        <label id="maxSizeLabel">Max File Size (KB)</label>
         <input type="number" id="maxSize" placeholder="e.g., 300" />
       </div>
       <!-- Column 3: Width Range -->
       <div class="form-group">
-        <label for="minWidth">Min Width (px)</label>
+        <label id="minWidthLabel">Min Width (px)</label>
         <input type="number" id="minWidth" placeholder="e.g., 300" />
-        <label for="maxWidth">Max Width (px)</label>
+        <label id="maxWidthLabel">Max Width (px)</label>
         <input type="number" id="maxWidth" placeholder="e.g., 600" />
       </div>
       <!-- Column 4: Height Range -->
       <div class="form-group">
-        <label for="minHeight">Min Height (px)</label>
+        <label id="minHeightLabel">Min Height (px)</label>
         <input type="number" id="minHeight" placeholder="e.g., 300" />
-        <label for="maxHeight">Max Height (px)</label>
+        <label id="maxHeightLabel">Max Height (px)</label>
         <input type="number" id="maxHeight" placeholder="e.g., 600" />
       </div>
-      <!-- Column 5: Exact Dimensions (Optional) -->
+      <!-- Column 5: Exact Dimensions -->
       <div class="form-group">
-        <label for="dimensions">Exact Dimensions (inches @ dpi)</label>
+        <label id="exactDimLabel">Exact Dimensions (inches @ dpi)</label>
         <input type="text" id="dimensions" placeholder="e.g., 2x2 @300" />
       </div>
     </div>
 
-    <!-- Resize Button -->
+    <!-- Resize & Download Buttons -->
     <button id="resizeBtn" disabled>Resize</button>
-    <!-- Download Button (appears after resize) -->
     <button id="downloadBtn">Download Resized Image</button>
-    <!-- Hidden Canvas to Process the Image -->
+    <!-- Hidden Canvas -->
     <canvas id="canvas" style="display: none;"></canvas>
 
-    <!-- New italicized note above the FAQ -->
-    <p style="font-style: italic; margin-top: 20px;">
+    <!-- Note Paragraph -->
+    <p id="notePara" style="font-style: italic; margin-top: 20px;">
       *Note: If you want to resize an image to a specific dimension (for example, 300×400),
       simply enter 300 in both the Min Width and Max Width fields, and 400 in both the
       Min Height and Max Height fields.
     </p>
 
-    <!-- FAQ Section at 75% font size -->
+    <!-- FAQ Section -->
     <div class="faq-section">
-      <h2>Frequently Asked Questions (FAQ)</h2>
+      <h2 id="faqHeading">Frequently Asked Questions (FAQ)</h2>
 
-      <h3>Will compressing my image reduce its quality?</h3>
-      <p>
-        Our <strong>online image compressor</strong> does its best to maintain
+      <h3 id="faqQ1">Will compressing my image reduce its quality?</h3>
+      <p id="faqA1">
+        Our online image compressor does its best to maintain
         high-quality results. You can resize and compress without losing too much detail.
       </p>
 
-      <h3>How do I resize an image without losing clarity?</h3>
-      <p>
-        Use our <strong>photo resizer</strong> feature to adjust width and height
+      <h3 id="faqQ2">How do I resize an image without losing clarity?</h3>
+      <p id="faqA2">
+        Use our photo resizer feature to adjust width and height
         while preserving aspect ratio. This helps maintain image clarity.
       </p>
     </div>
 
-    <!-- Link box at the bottom, pointing to govt-photo-resizer -->
+    <!-- Link to Govt Photo Resizer -->
     <div class="other-site-link">
       <p>
         Applying for government exams?
@@ -373,10 +366,9 @@
   </div>
 
   <script>
-    /* 
-      1) LIGHT/DARK MODE TOGGLE 
-         We'll store the user's preference in localStorage.
-    */
+    /* ---------------------------
+       1) Dark/Light Mode Toggle
+    --------------------------- */
     const themeToggle = document.getElementById('themeToggle');
 
     function loadTheme() {
@@ -390,7 +382,6 @@
       }
     }
 
-    // Toggle between dark and light mode
     themeToggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
       if (document.body.classList.contains('dark-mode')) {
@@ -404,9 +395,242 @@
 
     loadTheme(); // Initialize on page load
 
-    /* 
-      2) EXISTING RESIZER LOGIC 
-    */
+    /* ---------------------------
+       2) Language Translations
+    --------------------------- */
+    const translations = {
+      en: {
+        heading: "Custom Photo Resizer",
+        subHeading: "Why Use Our Online Image Compressor?",
+        introPara: "Our online image compressor and photo resizer makes it easy to reduce file sizes without losing quality...",
+        noteLine: "Provide either the width & height range OR the exact dimensions (in inches @ dpi). Do not fill both.",
+        uploadLabel: "Upload Image",
+        minSizeLabel: "Min File Size (KB)",
+        maxSizeLabel: "Max File Size (KB)",
+        minWidthLabel: "Min Width (px)",
+        maxWidthLabel: "Max Width (px)",
+        minHeightLabel: "Min Height (px)",
+        maxHeightLabel: "Max Height (px)",
+        exactDimLabel: "Exact Dimensions (inches @ dpi)",
+        resizeBtn: "Resize",
+        downloadBtn: "Download Resized Image",
+        notePara: "*Note: If you want to resize an image to a specific dimension (e.g., 300×400), just enter 300 in both Width fields and 400 in both Height fields.",
+        faqHeading: "Frequently Asked Questions (FAQ)",
+        faqQ1: "Will compressing my image reduce its quality?",
+        faqA1: "Our online image compressor does its best to maintain high-quality results...",
+        faqQ2: "How do I resize an image without losing clarity?",
+        faqA2: "Use our photo resizer feature to adjust width and height while preserving aspect ratio..."
+      },
+      hi: {
+        heading: "कस्टम फोटो रीसाइज़र",
+        subHeading: "हमारा ऑनलाइन इमेज कंप्रेसर क्यों उपयोग करें?",
+        introPara: "हमारा ऑनलाइन इमेज कंप्रेसर और फोटो रीसाइज़र आपके फोटो का आकार कम गुणवत्ता खोए बिना आसान बनाता है...",
+        noteLine: "या तो चौड़ाई-ऊँचाई की रेंज दें या इंच @ डीपीआई में सटीक आयाम। दोनों न भरें।",
+        uploadLabel: "इमेज अपलोड करें",
+        minSizeLabel: "न्यूनतम फ़ाइल साइज़ (KB)",
+        maxSizeLabel: "अधिकतम फ़ाइल साइज़ (KB)",
+        minWidthLabel: "न्यूनतम चौड़ाई (px)",
+        maxWidthLabel: "अधिकतम चौड़ाई (px)",
+        minHeightLabel: "न्यूनतम ऊँचाई (px)",
+        maxHeightLabel: "अधिकतम ऊँचाई (px)",
+        exactDimLabel: "सटीक आयाम (इंच @ डीपीआई)",
+        resizeBtn: "रीसाइज़",
+        downloadBtn: "रीसाइज़्ड इमेज डाउनलोड करें",
+        notePara: "*नोट: यदि आपको कोई विशिष्ट आयाम चाहिए (जैसे 300×400), तो दोनों चौड़ाई बॉक्स में 300 और दोनों ऊँचाई बॉक्स में 400 भरें।",
+        faqHeading: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
+        faqQ1: "क्या इमेज को कंप्रेस करने से गुणवत्ता कम होगी?",
+        faqA1: "हमारा ऑनलाइन इमेज कंप्रेसर गुणवत्ता बनाए रखने की पूरी कोशिश करता है...",
+        faqQ2: "बिना स्पष्टता खोए इमेज कैसे रीसाइज़ करें?",
+        faqA2: "हमारे फोटो रीसाइज़र फीचर का उपयोग करें जो चौड़ाई और ऊँचाई को पहलू अनुपात के साथ समायोजित करता है..."
+      },
+      ta: {
+        heading: "கஸ்டம் ஃபோட்டோ ரிசைசர்",
+        subHeading: "எங்கள் ஆன்லைன் படச் சுருக்கி ஏன் பயன்படுத்த வேண்டும்?",
+        introPara: "எங்கள் ஆன்லைன் படச் சுருக்கி மற்றும் ஃபோட்டோ ரிசைசர், தரத்தைக் குறையாமல் படங்களை எளிதாகச் சுருக்க உதவுகிறது...",
+        noteLine: "விரிந்த அகலம்-உயரம் அல்லது சரியான பரிமாணங்கள் (அங்குலம் @ dpi) ஒன்றை மட்டும் அளிக்கவும். இரண்டையும் நிரப்ப வேண்டாம்.",
+        uploadLabel: "படத்தை பதிவேற்றவும்",
+        minSizeLabel: "குறைந்தபட்ச கோப்பின் அளவு (KB)",
+        maxSizeLabel: "அதிகபட்ச கோப்பின் அளவு (KB)",
+        minWidthLabel: "குறைந்தபட்ச அகலம் (px)",
+        maxWidthLabel: "அதிகபட்ச அகலம் (px)",
+        minHeightLabel: "குறைந்தபட்ச உயரம் (px)",
+        maxHeightLabel: "அதிகபட்ச உயரம் (px)",
+        exactDimLabel: "சரியான பரிமாணங்கள் (அங்குலம் @ dpi)",
+        resizeBtn: "ரிசைஸ்",
+        downloadBtn: "ரிசைஸ் செய்த படத்தை பதிவிறக்கவும்",
+        notePara: "*குறிப்பு: ஒரு குறிப்பிட்ட பரிமாணத்திற்கு (உதா. 300×400) வேண்டுமென்றால், அகலம் பெட்டிகளில் இரண்டு முறையும் 300, உயரம் பெட்டிகளில் இரண்டு முறையும் 400 என்று இடவும்.",
+        faqHeading: "அடிக்கடி கேட்கப்படும் கேள்விகள் (FAQ)",
+        faqQ1: "படத்தைச் சுருக்குவதால் தரம் குறையுமா?",
+        faqA1: "எங்கள் ஆன்லைன் படச் சுருக்கி தரத்தை அதிகம் இழக்காமல் பாதுகாக்க முயற்சி செய்கிறது...",
+        faqQ2: "தரத்தை இழக்காமல் படத்தை எவ்வாறு ரிசைஸ் செய்வது?",
+        faqA2: "அகலம் மற்றும் உயரத்தை நிர்ணயித்து, அசுபா (aspect ratio) காக்க எங்கள் ஃபோட்டோ ரிசைசரை பயன்படுத்தவும்..."
+      },
+      bn: {
+        heading: "কাস্টম ফটো রিসাইজার",
+        subHeading: "কেন আমাদের অনলাইন ইমেজ কমপ্রেসর ব্যবহার করবেন?",
+        introPara: "আমাদের অনলাইন ইমেজ কমপ্রেসর ও ফটো রিসাইজার আপনাকে সহজে ছবির সাইজ কমাতে সাহায্য করে, মানের ক্ষতি ছাড়াই...",
+        noteLine: "দয়া করে শুধুমাত্র প্রস্থ-উচ্চতার পরিসর বা (ইঞ্চি @ ডিপিআই) সঠিক মাত্রা দিন। উভয়ই পূরণ করবেন না।",
+        uploadLabel: "ছবি আপলোড করুন",
+        minSizeLabel: "সর্বনিম্ন ফাইল সাইজ (KB)",
+        maxSizeLabel: "সর্বোচ্চ ফাইল সাইজ (KB)",
+        minWidthLabel: "সর্বনিম্ন প্রস্থ (px)",
+        maxWidthLabel: "সর্বোচ্চ প্রস্থ (px)",
+        minHeightLabel: "সর্বনিম্ন উচ্চতা (px)",
+        maxHeightLabel: "সর্বোচ্চ উচ্চতা (px)",
+        exactDimLabel: "সঠিক মাত্রা (ইঞ্চি @ ডিপিআই)",
+        resizeBtn: "রিসাইজ",
+        downloadBtn: "রিসাইজড ইমেজ ডাউনলোড",
+        notePara: "*নোট: নির্দিষ্ট মাত্রার জন্য (যেমন 300×400) চাইলে, উভয় প্রস্থ ঘরে 300 এবং উভয় উচ্চতা ঘরে 400 লিখুন।",
+        faqHeading: "প্রায়শই জিজ্ঞাসিত প্রশ্ন (FAQ)",
+        faqQ1: "ছবি কমপ্রেস করলে কি মান কমে যাবে?",
+        faqA1: "আমাদের অনলাইন ইমেজ কমপ্রেসর মান বজায় রাখার চেষ্টা করে...",
+        faqQ2: "মান না হারিয়ে কীভাবে ছবি রিসাইজ করব?",
+        faqA2: "আমাদের ফটো রিসাইজার ব্যবহার করুন, যেখানে প্রস্থ ও উচ্চতা অ্যাসপেক্ট রেশিও ধরে সামঞ্জস্য করা যায়..."
+      },
+      mr: {
+        heading: "कस्टम फोटो रिसायझर",
+        subHeading: "आपले ऑनलाइन इमेज कंप्रेसर का वापरावे?",
+        introPara: "आमचे ऑनलाइन इमेज कंप्रेसर व फोटो रिसायझर तुम्हाला फोटोचा आकार कमी करण्यास मदत करते, गुणवत्तेत फारसा फरक न पडू देता...",
+        noteLine: "कृपया फक्त रुंदी-उंची श्रेणी किंवा (इंच @ dpi) मधील अचूक परिमाण द्या. दोन्ही भरू नका.",
+        uploadLabel: "इमेज अपलोड करा",
+        minSizeLabel: "किमान फाइल साइज (KB)",
+        maxSizeLabel: "कमाल फाइल साइज (KB)",
+        minWidthLabel: "किमान रुंदी (px)",
+        maxWidthLabel: "कमाल रुंदी (px)",
+        minHeightLabel: "किमान उंची (px)",
+        maxHeightLabel: "कमाल उंची (px)",
+        exactDimLabel: "अचूक परिमाण (इंच @ dpi)",
+        resizeBtn: "रिसायझ करा",
+        downloadBtn: "रिसायझ केलेले इमेज डाउनलोड करा",
+        notePara: "*नोट: जर तुम्हाला एखादे विशिष्ट परिमाण हवे असेल (उदा. 300×400), तर दोन्ही रुंदी बॉक्समध्ये 300 आणि दोन्ही उंची बॉक्समध्ये 400 लिहा.",
+        faqHeading: "वारंवार विचारले जाणारे प्रश्न (FAQ)",
+        faqQ1: "इमेज कंप्रेस केल्यास गुणवत्ता कमी होईल का?",
+        faqA1: "आमचे ऑनलाइन इमेज कंप्रेसर गुणवत्ता टिकवून ठेवण्यासाठी प्रयत्न करते...",
+        faqQ2: "स्पष्टता न गमावता इमेज कशी रिसायझ करावी?",
+        faqA2: "आमचे फोटो रिसायझर वापरा जे रुंदी आणि उंची बद्दल गुणोत्तर राखून बदलू देते..."
+      },
+      te: {
+        heading: "కస్టమ్ ఫోటో రీసైజర్",
+        subHeading: "మా ఆన్‌లైన్ ఇమేజ్ కాంప్రెసర్ ఎందుకు ఉపయోగించాలి?",
+        introPara: "మా ఆన్‌లైన్ ఇమేజ్ కాంప్రెసర్, ఫోటో రీసైజర్ ఉపయోగించి మీరు ఫోటోల పరిమాణాన్ని నాణ్యత తగ్గకుండా ఈజీగా తగ్గించవచ్చు...",
+        noteLine: "దయచేసి వెడల్పు-ఎత్తు శ్రేణి లేదా (ఇంచ్ @ dpi) లో ఖచ్చితమైన కొలతలు ఇవ్వండి. రెండూ ఒకేసారి ఇవ్వొద్దు.",
+        uploadLabel: "ఇమేజ్ ఎక్కించండి",
+        minSizeLabel: "కనీస ఫైల్ పరిమాణం (KB)",
+        maxSizeLabel: "గరిష్ఠ ఫైల్ పరిమాణం (KB)",
+        minWidthLabel: "కనీస వెడల్పు (px)",
+        maxWidthLabel: "గరిష్ఠ వెడల్పు (px)",
+        minHeightLabel: "కనీస ఎత్తు (px)",
+        maxHeightLabel: "గరిష్ఠ ఎత్తు (px)",
+        exactDimLabel: "ఖచ్చితమైన కొలతలు (అంగుళాలు @ dpi)",
+        resizeBtn: "రీసైజ్",
+        downloadBtn: "రీసైజ్ చేసిన ఇమేజ్ డౌన్‌లోడ్",
+        notePara: "*నోట్: ఒక నిర్దిష్ట కొలతకు (ఉదా. 300×400) మార్పుచేయాలంటే, వెడల్పు బాక్సుల్లో రెండింటిలోనూ 300, ఎత్తు బాక్సుల్లో రెండింటిలోనూ 400 నమోదు చేయండి.",
+        faqHeading: "అడికిగా అడిగే ప్రశ్నలు (FAQ)",
+        faqQ1: "ఫోటోని కాంప్రెస్ చేయడంతో నాణ్యత తగ్గుతుందా?",
+        faqA1: "మా ఆన్‌లైన్ ఇమేజ్ కాంప్రెసర్ మంచి నాణ్యతను నిలబెట్టేందుకు ప్రయత్నిస్తుంది...",
+        faqQ2: "నాణ్యతను కోల్పోకుండా ఫోటోను ఎలా రీసైజ్ చేయాలి?",
+        faqA2: "రెండూ వెడల్పు, ఎత్తును స్పెసిఫై చేసుకుని మెయింటేన్ చేయడానికి మా ఫోటో రీసైజర్ ఉపయోగించండి..."
+      },
+      kn: {
+        heading: "ಕಸ್ಟಮ್ ಫೋಟೊ ರೀಸೈಝರ್",
+        subHeading: "ನಮ್ಮ ಆನ್‍ಲೈನ್ ಚಿತ್ರ ಸಾಂಕುचितಗೊಳಿಸುವ ಸಾಧನವನ್ನು ಯಾಕೆ ಬಳಸು?",
+        introPara: "ನಮ್ಮ ಆನ್‍ಲೈನ್ ಚಿತ್ರ ಸಾಂಕುчитಗೊಳಿಸುವ ಸಾಧನ ಮತ್ತು ಫೋಟೊ ರೀಸೈಝರ್ ಬಳಸಿ, ಚಿತ್ರಗಳ ಗಾತ್ರವನ್ನು ಗುಣಮಟ್ಟ ಕಡಿಮೆಯಾಗದೆ ಸುಲಭವಾಗಿ ಕಡಿಮೆ ಮಾಡಬಹುದು...",
+        noteLine: "ದಯವಿಟ್ಟು ಅಗಲ-ಎತ್ತರ ಶ್ರೇಣಿ ಅಥವಾ (ಇಂಚು @ dpi) ಯಲ್ಲಿ ನಿಖರವಾದ ಆಯಾಮವನ್ನು ಒದಗಿಸಿ. ಎರಡನ್ನೂ ಭರ್ತಿಮಾಡಬೇಡಿ.",
+        uploadLabel: "ಚಿತ್ರವನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ",
+        minSizeLabel: "ಕನಿಷ್ಟ ಫೈಲ್ ಗಾತ್ರ (KB)",
+        maxSizeLabel: "ಗರಿಷ್ಟ ಫೈಲ್ ಗಾತ್ರ (KB)",
+        minWidthLabel: "ಕನಿಷ್ಟ ಅಗಲ (px)",
+        maxWidthLabel: "ಗರಿಷ್ಟ ಅಗಲ (px)",
+        minHeightLabel: "ಕನಿಷ್ಟ ಎತ್ತರ (px)",
+        maxHeightLabel: "ಗರಿಷ್ಟ ಎತ್ತರ (px)",
+        exactDimLabel: "ನಿಖರವಾದ ಆಯಾಮ (ಇಂಚು @ dpi)",
+        resizeBtn: "ರೀಸೈಝ್",
+        downloadBtn: "ರೀಸೈಝ್ ಮಾಡಿದ ಚಿತ್ರ ಡೌನ್‍ಲೋಡ್ ಮಾಡಿ",
+        notePara: "*ಸೂಚನೆ: ನಿರ್ದಿಷ್ಟ ಆಯಾಮ (ಉದಾ. 300×400) ಬೇಕಾದರೆ, ಎರಡೂ ಅಗಲ ಬಾಕ್ಸುಗಳಲ್ಲಿ 300 ಹಾಗೂ ಎರಡೂ ಎತ್ತರ ಬಾಕ್ಸುಗಳಲ್ಲಿ 400 ಎಂದು ಬರೆಯಿರಿ.",
+        faqHeading: "ನೆಚ್ಚಿನ ಪ್ರಶ್ನೆಗಳು (FAQ)",
+        faqQ1: "ಚಿತ್ರವನ್ನು ಸಾಂಕುಚಿತಗೊಳಿಸಿದರೆ ಗುಣಮಟ್ಟ ಕಡಿಮೆಯಾಗುತ್ತದೆ?",
+        faqA1: "ನಮ್ಮ ಆನ್‍ಲೈನ್ ಚಿತ್ರ ಸಾಂಕುचितಗೊಳಿಸುವ ಸಾಧನ ಗುಣಮಟ್ಟವನ್ನು ಸಾಧ್ಯವಾದಷ್ಟು ಉಳಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತದೆ...",
+        faqQ2: "ಗುಣಮಟ್ಟವನ್ನು ತಪ್ಪದೆ ಚಿತ್ರವನ್ನು ರೀಸೈಝ್ ಮಾಡುವುದು ಹೇಗೆ?",
+        faqA2: "ಅಗಲ ಮತ್ತು ಎತ್ತರವನ್ನು ನಿರ್ದಿಷ್ಟಗೊಳಿಸಿ, ಭಾಗಲಬಯಾಕು ಉಳಿಸಿಕೊಳ್ಳಲು ನಮ್ಮ ಫೋಟೊ ರೀಸೈಝರ್ ಬಳಸಿ..."
+      },
+      ml: {
+        heading: "കസ്റ്റം ഫോട്ടോ റീസൈസർ",
+        subHeading: "ഞങ്ങളുടെ ഓൺലൈൻ ഇമേജ് കോംപ്രസ്സർ എന്തിന് ഉപയോഗിക്കാം?",
+        introPara: "ഞങ്ങളുടെ ഓൺലൈൻ ഇമേജ് കോംപ്രസ്സറും ഫോട്ടോ റീസൈസറുമൊത്തു, ഗുണനിലവാരം കുറയ്ക്കാതെ ഫോട്ടോകളുടെ വലിപ്പം ലളിതമായി കുറയ്ക്കാം...",
+        noteLine: "വീതം-ഉയരം റേഞ്ച് അല്ലെങ്കിൽ (ഇഞ്ച് @ dpi) എന്നതിൽ ശരിയായ വലിപ്പം മാത്രം നൽകുക. രണ്ടും നൽകേണ്ടതില്ല.",
+        uploadLabel: "ഇമേജ് അപ്ലോഡ് ചെയ്യുക",
+        minSizeLabel: "കുറഞ്ഞ ഫയൽ സൈസ് (KB)",
+        maxSizeLabel: "അധികം ഫയൽ സൈസ് (KB)",
+        minWidthLabel: "കുറഞ്ഞ വീതി (px)",
+        maxWidthLabel: "അധികം വീതി (px)",
+        minHeightLabel: "കുറഞ്ഞ ഉയരം (px)",
+        maxHeightLabel: "അധികം ഉയരം (px)",
+        exactDimLabel: "ശരിയായ വലിപ്പം (ഇഞ്ച് @ dpi)",
+        resizeBtn: "റീസൈസ്",
+        downloadBtn: "റീസൈസ് ചെയ്ത ചിത്രം ഡൗൺലോഡ്",
+        notePara: "*ശ്രദ്ധിക്കുക: ഒരു നിർദ്ദിഷ്ട വലിപ്പം വേണമെങ്കിൽ (ഉദാ. 300×400), വീതി ബോക്സിൽ 300, ഉയരം ബോക്സിൽ 400 എന്ന് എഴുതുക.",
+        faqHeading: "പതിവ് ചോദ്യങ്ങൾ (FAQ)",
+        faqQ1: "ഇമേജ് കോംപ്രസ് ചെയ്താൽ ഗുണനിലവാരം കുറയുമോ?",
+        faqA1: "ഞങ്ങളുടെ ഓൺലൈൻ ഇമേജ് കോംപ്രസ്സർ ഗുണനിലവാരം സാധ്യമായത്ര സംരക്ഷിക്കാൻ ശ്രമിക്കുന്നു...",
+        faqQ2: "ഗുണനിലവാരം നഷ്ടമില്ലാതെ ചിത്രം എങ്ങനെ റീസൈസ് ചെയ്യാം?",
+        faqA2: "വീതി, ഉയരം അനുപാതം പാലിച്ചുകൊണ്ട് മാറ്റാൻ ഞങ്ങളുടെ ഫോട്ടോ റീസൈസർ ഉപയോഗിക്കുക..."
+      }
+    };
+
+    // Current language
+    let currentLang = 'en';
+
+    // Updates all text based on chosen language
+    function updateLanguage(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+
+      // Update each element
+      document.getElementById('heading').textContent      = t.heading;
+      document.getElementById('subHeading').textContent  = t.subHeading;
+      document.getElementById('introPara').textContent   = t.introPara;
+      document.getElementById('noteLine').innerHTML      = t.noteLine; // has <br> or HTML
+      document.getElementById('uploadLabel').textContent = t.uploadLabel;
+      document.getElementById('minSizeLabel').textContent = t.minSizeLabel;
+      document.getElementById('maxSizeLabel').textContent = t.maxSizeLabel;
+      document.getElementById('minWidthLabel').textContent = t.minWidthLabel;
+      document.getElementById('maxWidthLabel').textContent = t.maxWidthLabel;
+      document.getElementById('minHeightLabel').textContent = t.minHeightLabel;
+      document.getElementById('maxHeightLabel').textContent = t.maxHeightLabel;
+      document.getElementById('exactDimLabel').textContent = t.exactDimLabel;
+      document.getElementById('resizeBtn').textContent    = t.resizeBtn;
+      document.getElementById('downloadBtn').textContent  = t.downloadBtn;
+      document.getElementById('notePara').textContent     = t.notePara;
+      document.getElementById('faqHeading').textContent   = t.faqHeading;
+      document.getElementById('faqQ1').textContent        = t.faqQ1;
+      document.getElementById('faqA1').textContent        = t.faqA1;
+      document.getElementById('faqQ2').textContent        = t.faqQ2;
+      document.getElementById('faqA2').textContent        = t.faqA2;
+    }
+
+    // Load user's last chosen language if available
+    function loadSavedLanguage() {
+      const savedLang = localStorage.getItem('lang') || 'en';
+      languageSelect.value = savedLang;
+      updateLanguage(savedLang);
+    }
+
+    /* ---------------------------
+       3) Hook up the Language Select
+    --------------------------- */
+    const languageSelect = document.getElementById('languageSelect');
+    languageSelect.addEventListener('change', () => {
+      const chosenLang = languageSelect.value;
+      updateLanguage(chosenLang);
+      // Save user’s choice
+      localStorage.setItem('lang', chosenLang);
+    });
+
+    loadSavedLanguage(); // Initialize language on page load
+
+    /* ---------------------------
+       4) Existing Resizer Logic
+    --------------------------- */
     const imageUpload = document.getElementById('imageUpload');
     const minSize = document.getElementById('minSize');
     const maxSize = document.getElementById('maxSize');
@@ -427,23 +651,21 @@
       resizedImageDataURL = '';
     }
 
-    // Validate that required fields are filled.
+    // Validate that required fields are filled
     function validateInputs() {
       if (!imageUpload.files || imageUpload.files.length === 0) return false;
       if (!minSize.value || !maxSize.value) return false;
-      // Check if either width/height range is provided or exact dimensions.
       const rangeProvided = minWidth.value && maxWidth.value && minHeight.value && maxHeight.value;
       const exactProvided = dimensions.value;
       if (!rangeProvided && !exactProvided) return false;
       return true;
     }
 
-    // Enable or disable the Resize button based on input validation.
+    // Enable or disable the Resize button based on input validation
     function updateResizeButton() {
       resizeBtn.disabled = !validateInputs();
     }
 
-    // Whenever the user changes any input, reset the download link and update the button
     [imageUpload, minSize, maxSize, minWidth, maxWidth, minHeight, maxHeight, dimensions].forEach(input => {
       input.addEventListener('input', () => {
         resetDownload();
@@ -451,28 +673,28 @@
       });
     });
 
-    // Function to estimate the size (in KB) of a Data URL.
+    // Estimate size (in KB) of a Data URL
     function dataURLSizeKB(dataURL) {
       const base64Str = dataURL.split(',')[1];
       const sizeInBytes = Math.floor((base64Str.length * 3) / 4);
       return sizeInBytes / 1024;
     }
 
-    // Adjust the JPEG quality until the file size is within the user-specified limits.
+    // Adjust JPEG quality until file size is within the user-specified limits
     function getDataURLWithSizeConstraints(minKB, maxKB, callback) {
-      let quality = 0.9; // Start with a high quality.
-      const step = 0.05; // Quality adjustment step.
+      let quality = 0.9; // Start with high quality
+      const step = 0.05;
       let dataURL = canvas.toDataURL('image/jpeg', quality);
       let sizeKB = dataURLSizeKB(dataURL);
 
-      // Lower quality if the file is too high.
+      // Lower quality if file is too large
       while (sizeKB > maxKB && quality > 0.1) {
         quality -= step;
         dataURL = canvas.toDataURL('image/jpeg', quality);
         sizeKB = dataURLSizeKB(dataURL);
       }
 
-      // Increase quality if the file is too low.
+      // Increase quality if file is too small
       while (sizeKB < minKB && quality < 1.0) {
         quality += step;
         if (quality > 1.0) quality = 1.0;
@@ -483,9 +705,7 @@
       callback(dataURL, quality, sizeKB);
     }
 
-    // When the user clicks the Resize button.
     resizeBtn.addEventListener('click', function () {
-      // Check if both the range and the exact dimension fields are filled.
       const rangeProvided = minWidth.value && maxWidth.value && minHeight.value && maxHeight.value;
       const exactProvided = dimensions.value;
       if (rangeProvided && exactProvided) {
@@ -503,7 +723,7 @@
         img.onload = function () {
           let newWidth, newHeight;
           if (exactProvided) {
-            // Parse the format "widthxheight @dpi" (e.g., "2x2 @300")
+            // Parse "widthxheight @dpi"
             const parts = dimensions.value.split('@');
             if (parts.length === 2) {
               const dims = parts[0].trim().split('x');
@@ -519,16 +739,14 @@
             newWidth = parseInt(minWidth.value);
             newHeight = parseInt(minHeight.value);
           }
-          // Resize the image using a hidden canvas.
           canvas.width = newWidth;
           canvas.height = newHeight;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
-          // Adjust JPEG quality to meet file size constraints.
           getDataURLWithSizeConstraints(parseInt(minSize.value), parseInt(maxSize.value), function(dataURL, qualityUsed, finalSizeKB) {
             resizedImageDataURL = dataURL;
-            downloadBtn.style.display = 'block'; // Show green Download button
+            downloadBtn.style.display = 'block';
             alert("Resize successful! Your image meets the size criteria. Final file size: "
               + finalSizeKB.toFixed(1)
               + " KB. Click the Download button to save your image."
@@ -540,7 +758,6 @@
       reader.readAsDataURL(file);
     });
 
-    // When the user clicks the Download button.
     downloadBtn.addEventListener('click', function () {
       if (!resizedImageDataURL) return;
       const link = document.createElement('a');
@@ -553,40 +770,28 @@
 
     /* --- DRAG & DROP LOGIC --- */
     const dropZone = document.getElementById('dropZone');
-
-    // Prevent default drag behaviors
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
       dropZone.addEventListener(eventName, e => {
         e.preventDefault();
         e.stopPropagation();
       }, false);
     });
-
-    // Highlight drop zone on dragover
     dropZone.addEventListener('dragover', () => {
       dropZone.style.borderColor = 'var(--highlight-border)';
     });
-
-    // Unhighlight on dragleave or drop
     dropZone.addEventListener('dragleave', () => {
       dropZone.style.borderColor = 'var(--border-color)';
     });
     dropZone.addEventListener('drop', () => {
       dropZone.style.borderColor = 'var(--border-color)';
     });
-
-    // Handle dropped files
     dropZone.addEventListener('drop', e => {
       const droppedFiles = e.dataTransfer.files;
       if (droppedFiles && droppedFiles.length > 0) {
-        // Assign dropped files to the existing input
         imageUpload.files = droppedFiles;
-        // Trigger the same 'input' event logic
         imageUpload.dispatchEvent(new Event('input'));
       }
     });
-
-    // Let user click the drop zone to open file dialog
     dropZone.addEventListener('click', () => {
       imageUpload.click();
     });
