@@ -16,7 +16,6 @@
     name="keywords"
     content="online image compressor, photo resizer, compress images, resize photos, image size reducer"
   >
-
   <!-- Optional Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,24 +26,24 @@
 
   <style>
     /*
-      We define two backgrounds:
-      1) Light mode: background.jpg
-      2) Dark mode: background-dark.webp
-
-      We'll also use a mild overlay in dark mode to keep text readable.
+      1) We define backgrounds for light and dark modes:
+         - Light mode uses background.jpg
+         - Dark mode uses background-dark.webp
+      2) We'll ensure both are set to cover the entire screen
+         with background-size: cover, background-position: center, etc.
     */
     :root {
-      /* Light Mode Background */
+      /* Light Mode BG */
       --bg-light: url("background.jpg") no-repeat center center fixed;
       --overlay-light: none;
       --text-color-light: #333;
       --container-bg-light: rgba(255, 255, 255, 0.85);
 
-      /* Dark Mode Background (the new file you downloaded) */
+      /* Dark Mode BG */
       --bg-dark: url("background-dark.webp") no-repeat center center fixed;
       --overlay-dark: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
       --text-color-dark: #ddd;
-      --container-bg-dark: rgba(0, 0, 0, 0.5); /* Adjust as you like */
+      --container-bg-dark: rgba(0, 0, 0, 0.5);
 
       /* Shared Colors */
       --border-color: #aaa;
@@ -53,7 +52,7 @@
       --dropzone-bg: #f9f9f9;
     }
 
-    /* Body uses background from these variables */
+    /* Light mode uses var(--overlay-light), var(--bg-light) */
     body {
       margin: 0;
       padding: 0;
@@ -61,16 +60,23 @@
       color: var(--text-color-light);
       background: var(--overlay-light), var(--bg-light);
       background-size: cover;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      transition: color 0.3s ease;
     }
 
-    /* Dark Mode toggles different background + text color */
+    /* Dark mode overrides: same cover/center/fixed to ensure full screen coverage */
     .dark-mode {
       color: var(--text-color-dark);
       background: var(--overlay-dark), var(--bg-dark);
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
 
-    /* Container for page content */
+    /* Container keeps its background color in both modes */
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -114,7 +120,7 @@
       transition: background-color 0.3s ease;
     }
     .dark-mode .form-group {
-      background: none; /* or #444 if you want some contrast in dark mode */
+      background: #444; /* or none if you want more transparency */
     }
 
     label {
@@ -207,7 +213,7 @@
       transition: background-color 0.3s ease;
     }
     .dark-mode .other-site-link {
-      background: none; /* or a subtle dark color if you prefer */
+      background: #2f4f4f; /* or none if you want it fully transparent */
     }
     .other-site-link a {
       color: var(--link-color);
@@ -252,9 +258,6 @@
 
     /* Responsive adjustments for smaller screens */
     @media (max-width: 600px) {
-      .grid-container {
-        grid-template-columns: 1fr;
-      }
       #themeToggle {
         float: none;
         display: block;
@@ -333,14 +336,14 @@
     <!-- Hidden Canvas to Process the Image -->
     <canvas id="canvas" style="display: none;"></canvas>
 
-    <!-- Italic note above the FAQ -->
+    <!-- New italicized note above the FAQ -->
     <p style="font-style: italic; margin-top: 20px;">
       *Note: If you want to resize an image to a specific dimension (for example, 300×400),
       simply enter 300 in both the Min Width and Max Width fields, and 400 in both the
       Min Height and Max Height fields.
     </p>
 
-    <!-- FAQ Section -->
+    <!-- FAQ Section at 75% font size -->
     <div class="faq-section">
       <h2>Frequently Asked Questions (FAQ)</h2>
 
