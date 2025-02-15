@@ -24,24 +24,59 @@
     rel="stylesheet"
   >
   <style>
-    /* Apply the background image to the entire page */
+    /* 
+      1) Define separate variables for LIGHT vs. DARK background
+         so we don't get a "dirty" look in dark mode. 
+    */
+    :root {
+      /* Light Mode Background */
+      --bg-light: url("background.jpg") no-repeat center center fixed;
+      --overlay-light: none; /* no overlay in light mode */
+      --text-color-light: #333;
+      --container-bg-light: rgba(255, 255, 255, 0.85);
+
+      /* Dark Mode: slight overlay to keep background visible but not muddy */
+      --bg-dark: url("background.jpg") no-repeat center center fixed;
+      --overlay-dark: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+      --text-color-dark: #ddd;
+      --container-bg-dark: rgba(0, 0, 0, 0.85);
+
+      /* Shared Colors */
+      --border-color: #aaa;
+      --highlight-border: #66a6ff;
+      --link-color: #008080;
+      --dropzone-bg: #f9f9f9;
+    }
+
+    /* BODY: We'll compose the background from var(--overlay-*) + var(--bg-*) */
     body {
       margin: 0;
       padding: 0;
       font-family: 'Roboto', sans-serif;
-      color: #333;
-      background: url("background.jpg") no-repeat center center fixed;
+      color: var(--text-color-light);
+      background: var(--overlay-light), var(--bg-light);
       background-size: cover;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Dark Mode Overrides */
+    .dark-mode {
+      color: var(--text-color-dark);
+      background: var(--overlay-dark), var(--bg-dark);
     }
 
     /* Container for the page content */
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      background-color: rgba(255, 255, 255, 0.85);
+      background-color: var(--container-bg-light);
       padding: 20px;
       border-radius: 8px;
       margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    .dark-mode .container {
+      background-color: var(--container-bg-dark);
     }
 
     /* Main heading at 200% font size */
@@ -55,7 +90,6 @@
       font-size: 14px;
       text-align: center;
       margin-bottom: 20px;
-      color: #555;
     }
 
     /* Grid layout for the form sections */
@@ -72,13 +106,20 @@
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+    .dark-mode .form-group {
+      background: #444; /* a bit darker in dark mode */
     }
 
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
-      color: #555;
+      transition: color 0.3s ease;
+    }
+    .dark-mode label {
+      color: var(--text-color-dark);
     }
 
     input[type="text"],
@@ -90,6 +131,7 @@
       border-radius: 5px;
       font-size: 14px;
       box-sizing: border-box;
+      color: #333;
     }
 
     /* Buttons */
@@ -157,10 +199,50 @@
       border-radius: 6px;
       text-align: center;
       font-size: 0.95rem;
+      transition: background-color 0.3s ease;
+    }
+    .dark-mode .other-site-link {
+      background: #2f4f4f; /* darker background in dark mode */
     }
     .other-site-link a {
-      color: #008080;
+      color: var(--link-color);
       font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    .dark-mode .other-site-link a {
+      color: #66ffd2; /* or any color you prefer in dark mode */
+    }
+
+    /* The Drag & Drop Box */
+    #dropZone {
+      margin-top: 10px;
+      border: 2px dashed var(--border-color);
+      border-radius: 6px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      background-color: var(--dropzone-bg);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .dark-mode #dropZone {
+      background-color: #333; /* or a slightly lighter/darker shade */
+      border-color: #666;
+    }
+
+    /* Theme Toggle Button */
+    #themeToggle {
+      float: right;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      background: #666;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #themeToggle:hover {
+      background: #555;
     }
 
     /* Responsive adjustments for smaller screens */
@@ -168,11 +250,19 @@
       .grid-container {
         grid-template-columns: 1fr;
       }
+      #themeToggle {
+        float: none;
+        display: block;
+        margin: 10px auto;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Light/Dark Mode Toggle Button -->
+    <button id="themeToggle">Dark Mode</button>
+
     <h1>Custom Photo Resizer</h1>
 
     <!-- Intro text at 80% font size -->
@@ -198,18 +288,7 @@
         <input type="file" id="imageUpload" accept="image/*" />
 
         <!-- Drag & Drop Box -->
-        <div 
-          id="dropZone"
-          style="
-            margin-top: 10px;
-            border: 2px dashed #aaa; 
-            border-radius: 6px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #f9f9f9;
-          "
-        >
+        <div id="dropZone">
           <p style="margin:0;">Drag &amp; Drop Your Image Here (or Click)</p>
         </div>
       </div>
@@ -286,7 +365,40 @@
   </div>
 
   <script>
-    // Get references to our form elements.
+    /* 
+      1) LIGHT/DARK MODE TOGGLE 
+         We'll store the user's preference in localStorage.
+    */
+    const themeToggle = document.getElementById('themeToggle');
+
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeToggle.textContent = 'Light Mode';
+      } else {
+        document.body.classList.remove('dark-mode');
+        themeToggle.textContent = 'Dark Mode';
+      }
+    }
+
+    // Toggle between dark and light mode
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        themeToggle.textContent = 'Light Mode';
+      } else {
+        localStorage.setItem('theme', 'light');
+        themeToggle.textContent = 'Dark Mode';
+      }
+    });
+
+    loadTheme(); // Initialize on page load
+
+    /* 
+      2) EXISTING RESIZER LOGIC 
+    */
     const imageUpload = document.getElementById('imageUpload');
     const minSize = document.getElementById('minSize');
     const maxSize = document.getElementById('maxSize');
@@ -444,15 +556,15 @@
 
     // Highlight drop zone on dragover
     dropZone.addEventListener('dragover', () => {
-      dropZone.style.borderColor = '#66a6ff';
+      dropZone.style.borderColor = 'var(--highlight-border)';
     });
 
     // Unhighlight on dragleave or drop
     dropZone.addEventListener('dragleave', () => {
-      dropZone.style.borderColor = '#aaa';
+      dropZone.style.borderColor = 'var(--border-color)';
     });
     dropZone.addEventListener('drop', () => {
-      dropZone.style.borderColor = '#aaa';
+      dropZone.style.borderColor = 'var(--border-color)';
     });
 
     // Handle dropped files
