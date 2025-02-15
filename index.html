@@ -26,7 +26,7 @@
   <style>
     /* 
       1) Define separate variables for LIGHT vs. DARK background
-         so we don't get a "dirty" look in dark mode. 
+         so we don't get a "dirty" look in dark mode.
     */
     :root {
       /* Light Mode Background */
@@ -35,11 +35,12 @@
       --text-color-light: #333;
       --container-bg-light: rgba(255, 255, 255, 0.85);
 
-      /* Dark Mode: slight overlay to keep background visible but not muddy */
+      /* Dark Mode: a lighter overlay (rgba(0,0,0,0.3)) 
+         so the background image is still visible & aesthetic */
       --bg-dark: url("background.jpg") no-repeat center center fixed;
-      --overlay-dark: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+      --overlay-dark: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
       --text-color-dark: #ddd;
-      --container-bg-dark: rgba(0, 0, 0, 0.85);
+      --container-bg-dark: rgba(0, 0, 0, 0.6); /* less opaque so background shows through */
 
       /* Shared Colors */
       --border-color: #aaa;
