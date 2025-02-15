@@ -25,22 +25,22 @@
   >
   <style>
     /* 
-      1) Define separate variables for LIGHT vs. DARK background
-         so we don't get a "dirty" look in dark mode.
+      1) Variables for LIGHT vs. DARK backgrounds.
+         We use a lighter overlay in dark mode so the original image remains visible.
     */
     :root {
       /* Light Mode Background */
       --bg-light: url("background.jpg") no-repeat center center fixed;
-      --overlay-light: none; /* no overlay in light mode */
+      --overlay-light: none;
       --text-color-light: #333;
       --container-bg-light: rgba(255, 255, 255, 0.85);
 
-      /* Dark Mode: a lighter overlay (rgba(0,0,0,0.3)) 
-         so the background image is still visible & aesthetic */
+      /* Dark Mode: a lighter overlay (rgba(0,0,0,0.2)) for a uniform background */
       --bg-dark: url("background.jpg") no-repeat center center fixed;
-      --overlay-dark: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
+      --overlay-dark: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
       --text-color-dark: #ddd;
-      --container-bg-dark: rgba(0, 0, 0, 0.6); /* less opaque so background shows through */
+      /* Transparent container in dark mode for a uniform look */
+      --container-bg-dark: transparent;
 
       /* Shared Colors */
       --border-color: #aaa;
@@ -49,7 +49,7 @@
       --dropzone-bg: #f9f9f9;
     }
 
-    /* BODY: We'll compose the background from var(--overlay-*) + var(--bg-*) */
+    /* BODY uses var(--overlay-*) + var(--bg-*) for backgrounds */
     body {
       margin: 0;
       padding: 0;
@@ -59,8 +59,6 @@
       background-size: cover;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-    /* Dark Mode Overrides */
     .dark-mode {
       color: var(--text-color-dark);
       background: var(--overlay-dark), var(--bg-dark);
@@ -103,14 +101,14 @@
 
     /* Light grey boxes for form groups */
     .form-group {
-      background: #f1f1f1; /* very light grey */
+      background: #f1f1f1;
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       transition: background-color 0.3s ease;
     }
     .dark-mode .form-group {
-      background: #444; /* a bit darker in dark mode */
+      background: none; /* or #444 if you want some contrast */
     }
 
     label {
@@ -203,7 +201,7 @@
       transition: background-color 0.3s ease;
     }
     .dark-mode .other-site-link {
-      background: #2f4f4f; /* darker background in dark mode */
+      background: none; /* or #2f4f4f if you want a subtle difference */
     }
     .other-site-link a {
       color: var(--link-color);
@@ -211,7 +209,7 @@
       transition: color 0.3s ease;
     }
     .dark-mode .other-site-link a {
-      color: #66ffd2; /* or any color you prefer in dark mode */
+      color: #66ffd2;
     }
 
     /* The Drag & Drop Box */
@@ -226,7 +224,7 @@
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
     .dark-mode #dropZone {
-      background-color: #333; /* or a slightly lighter/darker shade */
+      background-color: #333; 
       border-color: #666;
     }
 
