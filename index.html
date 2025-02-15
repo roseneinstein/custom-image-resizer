@@ -196,7 +196,24 @@
       <div class="form-group">
         <label for="imageUpload">Upload Image</label>
         <input type="file" id="imageUpload" accept="image/*" />
+
+        <!-- Drag & Drop Box -->
+        <div 
+          id="dropZone"
+          style="
+            margin-top: 10px;
+            border: 2px dashed #aaa; 
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f9f9f9;
+          "
+        >
+          <p style="margin:0;">Drag &amp; Drop Your Image Here (or Click)</p>
+        </div>
       </div>
+
       <!-- Column 2: File Size Limits -->
       <div class="form-group">
         <label for="minSize">Min File Size (KB)</label>
@@ -412,6 +429,46 @@
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    });
+
+    /* --- DRAG & DROP LOGIC --- */
+    const dropZone = document.getElementById('dropZone');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, e => {
+        e.preventDefault();
+        e.stopPropagation();
+      }, false);
+    });
+
+    // Highlight drop zone on dragover
+    dropZone.addEventListener('dragover', () => {
+      dropZone.style.borderColor = '#66a6ff';
+    });
+
+    // Unhighlight on dragleave or drop
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.style.borderColor = '#aaa';
+    });
+    dropZone.addEventListener('drop', () => {
+      dropZone.style.borderColor = '#aaa';
+    });
+
+    // Handle dropped files
+    dropZone.addEventListener('drop', e => {
+      const droppedFiles = e.dataTransfer.files;
+      if (droppedFiles && droppedFiles.length > 0) {
+        // Assign dropped files to the existing input
+        imageUpload.files = droppedFiles;
+        // Trigger the same 'input' event logic
+        imageUpload.dispatchEvent(new Event('input'));
+      }
+    });
+
+    // Optional: let user click the drop zone to open file dialog
+    dropZone.addEventListener('click', () => {
+      imageUpload.click();
     });
   </script>
 </body>
